@@ -1,0 +1,168 @@
+:root {
+  font-family: Inter, Segoe UI, Arial, sans-serif;
+  color: #f6f7f9;
+  background-color: #0a0e14;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top right, #1b2232 0%, #0a0e14 50%);
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+}
+
+.sidebar {
+  border-right: 1px solid #232b3a;
+  padding: 24px 18px;
+  background: #0d131d;
+}
+
+.sidebar h1 {
+  margin-bottom: 0;
+}
+
+.sidebar-subtitle {
+  color: #95a3bb;
+  margin-top: 4px;
+  margin-bottom: 24px;
+}
+
+.nav-link {
+  display: block;
+  color: #c5d0e2;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  background: #1b2333;
+}
+
+.main-content {
+  padding: 28px;
+}
+
+.center-card {
+  max-width: 520px;
+  margin: 10vh auto;
+  background: #131c2b;
+  border: 1px solid #273349;
+  border-radius: 14px;
+  padding: 28px;
+}
+
+button,
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid #31405b;
+  border-radius: 10px;
+  background: #0c121c;
+  color: #eaf0ff;
+  padding: 10px 12px;
+}
+
+button {
+  background: linear-gradient(135deg, #3f7bff, #4f53ff);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.email-list {
+  display: grid;
+  gap: 12px;
+}
+
+.email-card,
+.override-card,
+.reply-preview {
+  background: #121b2a;
+  border: 1px solid #293653;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.email-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.priority-pill {
+  background: #253e7b;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  height: fit-content;
+}
+
+.email-meta,
+.email-date,
+.info-message {
+  color: #9fb0cc;
+}
+
+.error-message {
+  color: #ff8e9e;
+}
+
+.override-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 8px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 10px;
+  max-width: 900px;
+}
+
+.reply-preview {
+  white-space: pre-wrap;
+}
+
+.keyword-manager {
+  background: #121b2a;
+  border: 1px solid #293653;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.keyword-input-row {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.keyword-list {
+  display: grid;
+  gap: 8px;
+}
+
+.keyword-item {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: 8px;
+  align-items: center;
+}

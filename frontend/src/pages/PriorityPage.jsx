@@ -26,7 +26,9 @@ export const PriorityPage = () => {
   };
 
   const loadKeywords = async () => {
-    const payload = await apiRequest("/emails/priority/keywords");
+    const payload = await apiRequest("/emails/priority/keywords", {
+      headers: { "x-user-id": userId }
+    });
     setKeywords(payload.keywords);
   };
 
@@ -69,6 +71,7 @@ export const PriorityPage = () => {
       setError("");
       const payload = await apiRequest("/emails/priority/keywords", {
         method: "POST",
+        headers: { "x-user-id": userId },
         body: JSON.stringify({ keyword: newKeyword })
       });
       setKeywords(payload.keywords);
@@ -84,6 +87,7 @@ export const PriorityPage = () => {
       setError("");
       const payload = await apiRequest("/emails/priority/keywords", {
         method: "DELETE",
+        headers: { "x-user-id": userId },
         body: JSON.stringify({ keyword })
       });
       setKeywords(payload.keywords);

@@ -23,7 +23,7 @@ export const getPriorityInbox = asyncHandler(async (req, res) => {
   const tokens = tokenStore.getUserTokens(userId);
   const { source, emails } = await fetchInboxEmails(tokens);
   const prioritized = scoreEmailsByPriority(emails);
-  const prioritizedWithUserBoost = applyUserPriorityKeywordBoost(prioritized);
+  const prioritizedWithUserBoost = applyUserPriorityKeywordBoost(prioritized, userId);
 
   res.status(200).json({ success: true, source, emails: prioritizedWithUserBoost });
 });

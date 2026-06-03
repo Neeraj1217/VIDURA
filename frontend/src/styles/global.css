@@ -79,6 +79,12 @@ button {
   border: none;
   cursor: pointer;
   font-weight: 600;
+  margin-bottom: 8px;
+}
+
+button.secondary-button {
+  background: #1b2333;
+  border: 1px solid #31405b;
 }
 
 button:disabled {

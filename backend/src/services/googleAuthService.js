@@ -27,9 +27,8 @@ export const getAuthUrl = (state = "default-state") => {
 export const exchangeCodeForTokens = async (code) => {
   const oauth2Client = createOAuth2Client();
 
-  logger.info("[google-oauth] Token exchange config", {
-    client_id: env.googleClientId,
-    client_secret: env.googleClientSecret,
+  logger.info("[google-oauth] Exchanging authorization code for tokens", {
+    client_id_configured: Boolean(env.googleClientId),
     redirect_uri: env.googleRedirectUri
   });
 

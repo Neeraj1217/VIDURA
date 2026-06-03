@@ -1,7 +1,9 @@
 import { listUserPriorityKeywords } from "./userPriorityKeywordStore.js";
 
-export const applyUserPriorityKeywordBoost = (emails) => {
-  const keywords = listUserPriorityKeywords();
+const clampScore = (score) => Math.min(100, Math.max(0, Math.round(score)));
+
+export const applyUserPriorityKeywordBoost = (emails, userId) => {
+  const keywords = listUserPriorityKeywords(userId);
 
   if (!keywords.length) {
     return emails;
@@ -23,7 +25,7 @@ export const applyUserPriorityKeywordBoost = (emails) => {
 
       return {
         ...email,
-        priorityScore: email.priorityScore + 50,
+        priorityScore: clampScore(email.priorityScore + 50),
         userBoosted: true
       };
     })

@@ -1,16 +1,29 @@
-export const userPriorityKeywords = [];
+const keywordsByUserId = new Map();
 
-export const addUserPriorityKeyword = (keyword) => {
-  userPriorityKeywords.push(keyword);
+const getUserKeywords = (userId) => {
+  if (!keywordsByUserId.has(userId)) {
+    keywordsByUserId.set(userId, []);
+  }
+  return keywordsByUserId.get(userId);
 };
 
-export const removeUserPriorityKeyword = (keyword) => {
+export const addUserPriorityKeyword = (userId, keyword) => {
+  const keywords = getUserKeywords(userId);
+  const normalized = keyword.toLowerCase();
+  if (!keywords.some((item) => item.toLowerCase() === normalized)) {
+    keywords.push(keyword);
+  }
+};
+
+export const removeUserPriorityKeyword = (userId, keyword) => {
   const normalizedKeyword = keyword.toLowerCase();
-  const nextKeywords = userPriorityKeywords.filter(
-    (item) => item.toLowerCase() !== normalizedKeyword
-  );
-  userPriorityKeywords.length = 0;
-  userPriorityKeywords.push(...nextKeywords);
+  const keywords = getUserKeywords(userId);
+  const nextKeywords = keywords.filter((item) => item.toLowerCase() !== normalizedKeyword);
+  keywordsByUserId.set(userId, nextKeywords);
 };
 
-export const listUserPriorityKeywords = () => [...userPriorityKeywords];
+export const listUserPriorityKeywords = (userId) => [...getUserKeywords(userId)];
+
+export const clearUserPriorityKeywordsForTests = () => {
+  keywordsByUserId.clear();
+};

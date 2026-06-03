@@ -1,9 +1,8 @@
 import OpenAI from "openai";
 import { env } from "../config/env.js";
+import { logger } from "../utils/logger.js";
 
 const VALID_TONES = ["professional", "casual", "friendly"];
-
-const client = env.openaiApiKey ? new OpenAI({ apiKey: env.openaiApiKey }) : null;
 
 const fallbackReply = (emailContent, tone) => {
   const greeting = tone === "casual" ? "Hi" : "Hello";
@@ -15,7 +14,9 @@ const fallbackReply = (emailContent, tone) => {
 
 export const normalizeTone = (tone) => (VALID_TONES.includes(tone) ? tone : "professional");
 
-export const generateReply = async ({ emailContent, tone }) => {
+const defaultClient = env.openaiApiKey ? new OpenAI({ apiKey: env.openaiApiKey }) : null;
+
+export const generateReply = async ({ emailContent, tone }, { client = defaultClient } = {}) => {
   const safeTone = normalizeTone(tone);
 
   if (!client) {
@@ -34,18 +35,38 @@ export const generateReply = async ({ emailContent, tone }) => {
     `Email content: ${emailContent}`
   ].join("\n");
 
-  const completion = await client.chat.completions.create({
-    model: env.openaiModel,
-    temperature: 0.4,
-    messages: [
-      { role: "system", content: "You generate high-quality business emails." },
-      { role: "user", content: prompt }
-    ]
-  });
+  try {
+    const completion = await client.chat.completions.create({
+      model: env.openaiModel,
+      temperature: 0.4,
+      messages: [
+        { role: "system", content: "You generate high-quality business emails." },
+        { role: "user", content: prompt }
+      ]
+    });
 
-  return {
-    tone: safeTone,
-    reply: completion.choices[0]?.message?.content?.trim() || fallbackReply(emailContent, safeTone),
-    source: "openai"
-  };
+    const replyText = completion.choices[0]?.message?.content?.trim();
+    if (!replyText) {
+      logger.warn("[ai-reply] OpenAI returned an empty response; using fallback.");
+      return {
+        tone: safeTone,
+        reply: fallbackReply(emailContent, safeTone),
+        source: "fallback"
+      };
+    }
+
+    return {
+      tone: safeTone,
+      reply: replyText,
+      source: "openai"
+    };
+  } catch (error) {
+    const reason = error?.status || error?.code || error?.message || "unknown error";
+    logger.warn(`[ai-reply] OpenAI request failed (${reason}); using fallback.`);
+    return {
+      tone: safeTone,
+      reply: fallbackReply(emailContent, safeTone),
+      source: "fallback"
+    };
+  }
 };

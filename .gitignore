@@ -4,5 +4,7 @@ dist
 backend/.env
 frontend/.env
 coverage
+*.log
+logs/
 .DS_Store
 Thumbs.db
